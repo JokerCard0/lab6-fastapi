@@ -20,7 +20,6 @@ jobs:
 
     - name: Build and push image
       run: |
-        export IMAGE=myrepo/myimage
-        docker tag $IMAGE:latest $IMAGE:${{ env.TS }}
         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/python-app:latest .
+        docker tag $IMAGE:latest $IMAGE:${{ env.TS }}
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/python-app:latest
