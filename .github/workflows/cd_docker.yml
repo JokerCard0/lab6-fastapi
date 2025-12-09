@@ -11,11 +11,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Create timestamp
+      run: echo "TS=$(date +%Y-%m-%d-%H-%M-%S)" >> $GITHUB_ENV
+
     - name: Login to Docker Hub
       run: |
         echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
     - name: Build and push image
       run: |
+        docker tag $IMAGE:latest $IMAGE:${{ env.TS }}
         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/python-app:latest .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/python-app:latest
